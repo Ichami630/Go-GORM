@@ -31,30 +31,17 @@ func getConnectionString() string {
 	)
 }
 
-type user struct {
-	gorm.Model
-	name  string
-	email string
-}
-
-type channel struct {
-	gorm.Model
-	name        string
-	description string
-}
-
-type message struct {
-	gorm.Model
-	content   string
-	userID    uint
-	channedID uint
-	user      user
-	channel   channel
+type User struct {
+	ID        uint   `gorm:"primaryKey"`
+	Name      string `gorm:"size:100;not null"`
+	Email     string `gorm:"unique;not null"`
+	Age       int
+	CreatedAt int64
 }
 
 // perform the migrations
 func setup(db *gorm.DB) {
-	db.AutoMigrate(&user{}, &channel{}, &message{})
+	db.AutoMigrate(&User{})
 }
 
 func main() {
@@ -68,5 +55,9 @@ func main() {
 
 	setup(conn)
 	fmt.Println("Database created successfully..")
+
+	//create a new record
+	user := User{Name: "ichami", Email: "brandonichami@gmail.com"}
+	conn.Create(&user)
 
 }
