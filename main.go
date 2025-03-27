@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
@@ -45,6 +46,7 @@ func setup(db *gorm.DB) {
 }
 
 func main() {
+	now := time.Now()
 	loadEnv()
 
 	dns := getConnectionString()
@@ -57,7 +59,21 @@ func main() {
 	fmt.Println("Database created successfully..")
 
 	//create a new record
-	user := User{Name: "ichami", Email: "brandonichami@gmail.com"}
-	conn.Create(&user)
+	// user := User{Name: "brandon", Email: "brandon@gmail.com"}
 
+	//batch insertions
+	// user := []User{
+	// 	{Name: "john", Email: "john@gmail.com"}, {Name: "doe", Email: "doe@gmail.com"},
+	// }
+	// conn.Create(&user)
+
+	//read record
+	selectById(conn)
+	getByEmail(conn)
+	getAll(conn)
+	getColumn(conn)
+	getOrderBy(conn)
+	pagination(conn)
+	raw(conn)
+	fmt.Println("time elapsed..", time.Since(now))
 }
