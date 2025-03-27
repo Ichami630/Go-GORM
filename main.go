@@ -31,41 +31,42 @@ func getConnectionString() string {
 	)
 }
 
-// type user struct {
-// 	gorm.Model
-// 	name  string
-// 	email string
-// }
+type user struct {
+	gorm.Model
+	name  string
+	email string
+}
 
-// type channel struct {
-// 	gorm.Model
-// 	name        string
-// 	description string
-// }
+type channel struct {
+	gorm.Model
+	name        string
+	description string
+}
 
-// type message struct {
-// 	gorm.Model
-// 	content   string
-// 	userID    uint
-// 	channedID uint
-// 	user      user
-// 	channel   channel
-// }
+type message struct {
+	gorm.Model
+	content   string
+	userID    uint
+	channedID uint
+	user      user
+	channel   channel
+}
 
 // perform the migrations
-// func setup(db *gorm.DB) {
-// 	db.AutoMigrate(&user{}, &channel{}, &message{})
-// }
+func setup(db *gorm.DB) {
+	db.AutoMigrate(&user{}, &channel{}, &message{})
+}
 
 func main() {
 	loadEnv()
 
 	dns := getConnectionString()
-	_, err := gorm.Open(postgres.Open(dns), &gorm.Config{})
+	conn, err := gorm.Open(postgres.Open(dns), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Failed to connect to the database:", err)
 	}
 
-	log.Println("Connected to the database successfully!")
+	setup(conn)
+	fmt.Println("Database created successfully..")
 
 }
