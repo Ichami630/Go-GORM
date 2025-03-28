@@ -75,5 +75,12 @@ func main() {
 	getOrderBy(conn)
 	pagination(conn)
 	raw(conn)
+
+	//update records
+	singleColumn(conn)
+	multipleColumn(conn)
+
+	//delete record
+	delete(conn)
 	fmt.Println("time elapsed..", time.Since(now))
 }
